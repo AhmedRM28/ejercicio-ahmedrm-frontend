@@ -156,7 +156,7 @@ a {
 
 .add-button {
     background-color: #a00 !important;
-    float: right;
+    margin-left: auto;
     font-size: 15px;
 }
 
