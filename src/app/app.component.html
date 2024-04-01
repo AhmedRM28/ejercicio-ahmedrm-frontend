@@ -127,13 +127,13 @@
             <div class="col-md-6">          
               <div class="form-group">
                 <label for="startDate" style="font-weight:bold">Start Date *</label>
-                <input type="datetime-local" ngModel="{{editedPrice?.startDate}}" name="startDate" class="form-control" id="startDate" placeholder="Start Date" required>
+                <input type="datetime-local" [ngModel]="editedPrice?.startDate | date: 'yyyy-MM-ddTHH:mm:ss.SSS':'+0:00'" name="startDate" class="form-control" id="startDate" placeholder="Start Date" required>
               </div>
             </div>
             <div class="col-md-6">          
               <div class="form-group">
                 <label for="endDate" style="font-weight:bold">End Date</label>
-                <input type="datetime-local" ngModel="{{editedPrice?.endDate}}" name="endDate" class="form-control" id="endDate" placeholder="End Date">
+                <input type="datetime-local" [ngModel]="editedPrice?.endDate | date: 'yyyy-MM-ddTHH:mm:ss.SSS':'+0:00'" name="endDate" class="form-control" id="endDate" placeholder="End Date">
               </div>
             </div>
           </div>
