@@ -79,13 +79,13 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="productId" style="font-weight:bold">Product ID</label>
+                <label for="productId" style="font-weight:bold">Product ID *</label>
                 <input type="text" pattern="^[0-9]*$" ngModel="{{editedPrice?.productId}}" name="productId" class="form-control" id="productId" placeholder="Product ID" required>
                </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="brand" style="font-weight:bold">Brand</label>
+                <label for="brand" style="font-weight:bold">Brand *</label>
                 <select ngModel="{{editedPrice?.brand?.id}}" name="brand" class="form-control" id="brand" required>
                   <option value="" disabled selected hidden>Brand</option>
                   @for (brand of brands; track brand) {
@@ -126,7 +126,7 @@
           <div class="row">
             <div class="col-md-6">          
               <div class="form-group">
-                <label for="startDate" style="font-weight:bold">Start Date</label>
+                <label for="startDate" style="font-weight:bold">Start Date *</label>
                 <input type="datetime-local" ngModel="{{editedPrice?.startDate}}" name="startDate" class="form-control" id="startDate" placeholder="Start Date" required>
               </div>
             </div>
@@ -134,6 +134,13 @@
               <div class="form-group">
                 <label for="endDate" style="font-weight:bold">End Date</label>
                 <input type="datetime-local" ngModel="{{editedPrice?.endDate}}" name="endDate" class="form-control" id="endDate" placeholder="End Date">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">          
+              <div class="form-group">
+                <span style="font-weight: bold;">Fields marked with * are required.</span>
               </div>
             </div>
           </div>

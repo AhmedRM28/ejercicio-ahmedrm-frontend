@@ -68,7 +68,6 @@ export class AppComponent implements OnInit {
           this.getAllPrices();
         },
         error: (error: HttpErrorResponse) => {
-          console.log(error)
           this.openOperationResultModal("Error", error.message);
         }
       })
