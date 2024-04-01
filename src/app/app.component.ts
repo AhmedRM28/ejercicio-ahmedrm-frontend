@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Price } from './price';
-import { PriceService } from './price.service';
+import { Price } from './models/price';
+import { PriceService } from './services/price.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Brand } from './brand';
-import { BrandService } from './brand.service';
-import { OpResult } from './op-result';
+import { Brand } from './models/brand';
+import { BrandService } from './services/brand.service';
+import { OpResult } from './models/op-result';
 
 @Component({
   selector: 'app-root',
