@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <span class="navbar-brand" style="color:white;">Prices Manager</span>
 </nav>
@@ -9,8 +7,8 @@
     <div class="card">
       <div class="card-header">
         <h4>Price Details</h4>
+        <a class="add-button btn btn-secondary btn-action mr-1" (click)="onOpenModal(null)"><i class="fas fa-plus"></i></a>
       </div>
-      <!-- <a class="btn btn-success btn-action mr-1" data-toggle="modal" data-target="#addPrice" data-original-title="Add new price"><i class="fas fa-plus"></i></a> -->
       @if (prices.length == 0) {
         <div class="card-body">
           <h5>The list of prices is empty</h5>
@@ -28,7 +26,7 @@
                   <th class="text-center">Price</th>
                   <th class="text-center">Start Date</th>
                   <th class="text-center">End Date</th>
-                  <!-- <th class="text-center">Actions</th> -->
+                  <th class="text-center">Actions</th>
               </tr>
               @for (price of prices; track price) {
                 <tr>
@@ -38,18 +36,152 @@
                   <td class="text-center">{{price?.price?.toFixed(2)}}</td>
                   <td class="text-center">{{price?.startDate | date: "MMM dd, yyyy, HH:mm"}}</td>
                   <td class="text-center">{{price?.endDate | date: "MMM dd, yyyy, HH:mm"}}</td>
-                  <!-- <td class="text-center">
-                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip" data-original-title="Edit" (click)="onOpenModal(price)"><i class="fas fa-pencil-alt"></i></a>
-                    <a class="btn btn-danger btn-action mr-1" data-toggle="tooltip" data-original-title="Delete" data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?" (click)="onOpenModal(price)"><i class="fa fa-trash"></i></a>                  
-                  </td> -->
+                  <td class="text-center">
+                    <div class="dropdown">
+                      <a class="actions-button mr-1" id="actionsDropDown" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>                  
+                      <div class="dropdown-menu" aria-labelledby="actionsDropDown">
+                        <a class="dropdown-item" (click)="onOpenModal(price)"><i class="fas fa-pencil-alt"></i><span style="padding-left: 10px;">Edit</span></a>
+                        <a class="dropdown-item" (click)="onOpenModal(price.id)"><i class="fas fa-trash-alt" style="color: #a00 !important"></i><span style="padding-left: 10px;">Delete</span></a>
+                      </div>
+                    </div>
+                  </td>
                 </tr>    
               }
-              <!-- <div ng-include="app.modal.html'"></div> -->
               </tbody>
             </table>
           </div>
         </div>
       }
     </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addOrEditPrice" tabindex="-1" role="dialog" aria-labelledby="addOrEditPriceLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addOrEditPriceLabel" style="font-weight: bold;">
+            @if (editedPrice?.id) {
+              Edit selected price
+            } @else {
+              Create new Price
+            }
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+         <form #addOrEditForm="ngForm">
+         @if (editedPrice?.id) {
+          <input type="hidden" ngModel="{{editedPrice?.id}}" name="id" class="form-control" id="id" required>
+         }
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="productId" style="font-weight:bold">Product ID</label>
+                <input type="text" pattern="^[0-9]*$" ngModel="{{editedPrice?.productId}}" name="productId" class="form-control" id="productId" placeholder="Product ID" required>
+               </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="brand" style="font-weight:bold">Brand</label>
+                <select ngModel="{{editedPrice?.brand?.id}}" name="brand" class="form-control" id="brand" required>
+                  <option value="" disabled selected hidden>Brand</option>
+                  @for (brand of brands; track brand) {
+                    <option value="{{brand.id}}">{{brand.name}}</option>
+                  }
+                </select>
+              </div>
+            </div>  
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="priceList" style="font-weight:bold">Price List</label>
+                <input type="text" ngModel="{{editedPrice?.priceList}}" name="priceList" class="form-control" id="priceList" placeholder="Price List">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="price" style="font-weight:bold">Price</label>
+                <input type="text" pattern="^[0-9]+\.?[0-9]{0,2}$" ngModel="{{editedPrice?.price?.toFixed(2)}}" name="price" class="form-control" id="price" placeholder="Price">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">          
+              <div class="form-group">
+                <label for="currency" style="font-weight:bold">Currency</label>
+                <input type="text" ngModel="{{editedPrice?.currency}}" name="currency" class="form-control" id="currency" placeholder="Currency">
+              </div>
+            </div>
+            <div class="col-md-6">          
+              <div class="form-group">
+                <label for="priority" style="font-weight:bold">Priority</label>
+                <input type="text" pattern="^[0-9]*$" ngModel="{{editedPrice?.priority}}" name="priority" class="form-control" id="priority" placeholder="Priority">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">          
+              <div class="form-group">
+                <label for="startDate" style="font-weight:bold">Start Date</label>
+                <input type="datetime-local" ngModel="{{editedPrice?.startDate}}" name="startDate" class="form-control" id="startDate" placeholder="Start Date" required>
+              </div>
+            </div>
+            <div class="col-md-6">          
+              <div class="form-group">
+                <label for="endDate" style="font-weight:bold">End Date</label>
+                <input type="datetime-local" ngModel="{{editedPrice?.endDate}}" name="endDate" class="form-control" id="endDate" placeholder="End Date">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+             <button type="button" id="add-employee-form" class="btn btn-ligth" data-dismiss="modal">Close</button>
+             <button [disabled]="addOrEditForm.invalid" (click)="onAddOrUpdatePrice(addOrEditForm)" data-dismiss="modal" class="btn btn-secondary" style="background-color: #a00 !important">Save changes</button>
+          </div>
+          </form>
+       </div>
+    </div>
+  </div>
+  </div>
+
+<div class="modal fade" id="deletePrice" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="deleteModelLabel">Delete Price</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <p>Are you sure you want to delete the selected price?</p>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button (click)="onDeletePrice(detelePriceId)" class="btn btn-secondary" style="background-color: #a00 !important" data-dismiss="modal">Yes</button>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+<div class="modal fade" id="operationResultModal" tabindex="-1" role="dialog" aria-labelledby="operationResultModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="deleteModelLabel">{{operationResult.status}}</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <p>{{operationResult.message}}</p>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" style="background-color: #a00 !important" data-dismiss="modal">OK</button>
+           </div>
+        </div>
+     </div>
   </div>
 </div>

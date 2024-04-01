@@ -138,15 +138,35 @@ a {
     color: #fff;
 }
 
-.progress {
-    -webkit-box-shadow: 0 0.4rem 0.6rem rgba(0,0,0,0.15);
-    box-shadow: 0 0.4rem 0.6rem rgba(0,0,0,0.15);
-}
-
 .btn-action {
     color: #fff !important;
     line-height: 25px;
     font-size: 12px;
     min-width: 35px;
     min-height: 35px;
+}
+
+.actions-button {
+    color: grey !important;
+    line-height: 25px;
+    font-size: 20px;
+    min-width: 35px;
+    min-height: 35px;
+}
+
+.add-button {
+    background-color: #a00 !important;
+    float: right;
+    font-size: 15px;
+}
+
+.dropdown-item-align {
+    align-items: right;
+}
+
+@media (min-width: 768px) {
+    .modal-xl {
+        width: 90%;
+        max-width:800px;
+    }
 }
